@@ -18,9 +18,44 @@ var library = (function () {
                 Time: (function () {
                     return {
                         WithSeconds: function () {
+                            var date = new Date();
+                            var amPm = 'AM';
+                            var hours = date.getHours();
+                            if (hours > 12) {
+                                hours -= 12;
+                                amPm = 'PM';
+                            } else if (hours === 0) {
+                                hours = 12;
+                            }
+                            var minutes = date.getMinutes();
+                            if (minutes < 10) {
+                                minutes = '0' + minutes;
+                            }
+                            var seconds = date.getSeconds();
+                            if (seconds < 10) {
+                                seconds = '0' + seconds;
+                            }
 
+                            var timeWithoutSecs = hours + ':' + minutes + ':' + seconds + ' ' + amPm;
+                            return timeWithoutSecs;
                         },
-                        WithOutSeconds: function () { }
+                        WithOutSeconds: function () {
+                            var date = new Date();
+                            var amPm = 'AM';
+                            var hours = date.getHours();
+                            if (hours > 12) {
+                                hours -= 12;
+                                amPm = 'PM';
+                            } else if (hours === 0) {
+                                hours = 12;
+                            }
+                            var minutes = date.getMinutes();
+                            if (minutes < 10) {
+                                minutes = '0' + minutes;
+                            }
+                            var timeWithoutSecs = hours + ':' + minutes + ' ' + amPm;
+                            return timeWithoutSecs;
+                        }
                     }
                 })(),
                 MDY: (function () {
@@ -96,7 +131,14 @@ var library = (function () {
                     return String(hour);
                 },
                 TwelveHour: function () {
-
+                    var date = new Date();
+                    var hours = date.getHours();
+                    if (hours > 12) {
+                        hours -= 12;
+                    } else if (hours === 0) {
+                        hours = 12;
+                    }
+                    return String(hours);
                 },
                 AMPM: (function () {
                     return {
@@ -123,7 +165,7 @@ var library = (function () {
                             else {
                                 return am;
                             }
-                         }
+                        }
                     }
                 })()
             }
@@ -148,7 +190,9 @@ var library = (function () {
                     var dayOfWeek = date.getDay();
                     return String(weekDay[dayOfWeek]);
                 },
-                WeekOfYear: function () { }
+                WeekOfYear: function () {
+
+                }
             }
         })(),
         Month: (function () {
@@ -161,6 +205,21 @@ var library = (function () {
                             return String(day);
                         },
                         Ordinal: function () {
+                            var date = new Date();
+                            var day = date.getDate();
+                            var suffix;
+                            if (day > 20 || day < 10) {
+                                switch (day % 10) {
+                                    case 1:
+                                        suffix = "st";
+                                    case 2:
+                                        suffix = "nd";
+                                    case 3:
+                                        suffix = "rd";
+                                }
+                                suffix = "th";
+                            }
+                            return String(day + suffix);
                         },
                         DateDblDigit: function () {
                             var date = new Date();
@@ -175,7 +234,6 @@ var library = (function () {
                         }
                     }
                 })(),
-                // MonthNumber: function(){ return String(new Date().getMonth() + 1);},
                 MonthNumber: function () {
                     var date = new Date();
                     var month = date.getMonth() + 1;
@@ -210,7 +268,13 @@ var library = (function () {
             return {
                 DayOfYear: (function () {
                     return {
-                        Numeral: function () { },
+                        Numeral: function () {
+                            var date = new Date();
+                            var first = new Date(date.getFullYear(), 0, 1);
+                            var theDay = Math.round(((date - first) / 1000 / 60 / 60 / 24) + .5, 0);
+                             return String(theDay);
+                             
+                        },
                         Ordinal: function () { }
                     }
                 })(),
