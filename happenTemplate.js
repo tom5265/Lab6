@@ -191,7 +191,9 @@ var library = (function () {
                     return String(weekDay[dayOfWeek]);
                 },
                 WeekOfYear: function () {
-
+                    var date = new Date;
+                    var firstDay = new Date(date.getFullYear(), 0, 1);
+                    return String(Math.round((((date - firstDay) / 86400000) + date.getDay() + 1) / 7));
                 }
             }
         })(),
@@ -207,19 +209,20 @@ var library = (function () {
                         Ordinal: function () {
                             var date = new Date();
                             var day = date.getDate();
-                            var suffix;
-                            if (day > 20 || day < 10) {
-                                switch (day % 10) {
-                                    case 1:
-                                        suffix = "st";
-                                    case 2:
-                                        suffix = "nd";
-                                    case 3:
-                                        suffix = "rd";
-                                }
-                                suffix = "th";
+                            var x = day % 10;
+                            if (x == 1) {
+                                day = day + 'st';
                             }
-                            return String(day + suffix);
+                            else if (x == 2) {
+                                day = day + 'nd';
+                            }
+                            else if (x == 3) {
+                                day = day + 'rd';
+                            }
+                            else {
+                                day = day + 'th';
+                            }
+                            return String(day);
                         },
                         DateDblDigit: function () {
                             var date = new Date();
@@ -272,10 +275,29 @@ var library = (function () {
                             var date = new Date();
                             var first = new Date(date.getFullYear(), 0, 1);
                             var theDay = Math.round(((date - first) / 1000 / 60 / 60 / 24) + .5, 0);
-                             return String(theDay);
-                             
+                            return String(theDay);
+
                         },
-                        Ordinal: function () { }
+                        Ordinal: function () {
+                            var date = new Date();
+                            var first = new Date(date.getFullYear(), 0, 1);
+                            var theDay = Math.round(((date - first) / 1000 / 60 / 60 / 24) + .5, 0);
+                            var x = theDay % 10;
+                            var y = theDay % 100;
+                            if (x == 1 && y != 11) {
+                                theDay = theDay + 'st';
+                            }
+                            else if (x == 2 && y != 12) {
+                                theDay = theDay + 'nd';
+                            }
+                            else if (x == 3 && y != 13) {
+                                theDay = theDay + 'rd';
+                            }
+                            else {
+                                theDay = theDay + 'th';
+                            }
+                            return String(theDay);
+                        }
                     }
                 })(),
                 YearFull: function () {
